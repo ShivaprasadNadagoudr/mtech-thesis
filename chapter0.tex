@@ -1,1 +1,19 @@
 \chapter{Introduction}\label{ch:introduction}
+\section{The Explore-Exploit Tradeoff}
+The real-world decision-making processes has a feature that presents uncertainity in the outcome of future decision. 
+So it is difficult for agent(decision-maker), due to uncertainity in the result of a given action, to choose the best next action. 
+Most of the real-world tasks aiming at maximising cumulative outcomes require to make many sequential decisions.\\
+Successful completion of such a task necessitates a basic tension: an decision-maker (agent) must constantly choose between exploiting all 
+known good possibilities and researching unknown but potentially better options. 
+This conflict is known as the explore-exploit trade-off, and it's at the basis of improving decision-making.\\
+The explore-exploit tradeoff can be observed in a variety of natural and artificial systems. 
+Foraging animals in the natural world strive to consume as much food as possible while also seeking out the most rewarding foraging areas \cite{Keasar:2002}.
+
+\section{Multi-Armed Bandit Problem}
+The Multi-armed Bandit (MAB) problem is a classic mathematical description of the explore-exploit tradeoff \cite{Robbins:1952}. 
+A decision-maker(agent) is faced with a sequential series of decisions in the MAB problem. 
+Each choice requires the decision-maker(agent) to pick between two or more options, often known as arms, 
+each of which has a probability distribution associated with it that models the reward. 
+The decision-maker receives a noisy reward chosen from the related probability distribution after selecting an option. 
+The goal of the decision-maker is to maximise their expected cumulative reward, 
+which is comparable to selecting the option with the highest mean as often as possible.
