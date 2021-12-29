@@ -1,64 +1,65 @@
 \chapter{Introduction}\label{ch:introduction}
-\section{The Explore-Exploit Tradeoff}
-The real-world decision-making processes has a feature that presents uncertainity in the outcome of future decision. 
-So it is difficult for agent(decision-maker), due to uncertainity in the result of a given action, to choose the best next action. 
-Most of the real-world tasks aiming at maximising cumulative outcomes require to make many sequential decisions.\\
-Successful completion of such a task necessitates a basic tension: an decision-maker (agent) must constantly choose between exploiting all 
-known good possibilities and researching unknown but potentially better options. 
-This conflict is known as the explore-exploit trade-off, and it's at the basis of improving decision-making.\\
-The explore-exploit tradeoff can be observed in a variety of natural and artificial systems. 
-Foraging animals in the natural world strive to consume as much food as possible while also seeking out the most rewarding foraging areas \cite{Keasar:2002}.
+Reinforcement learning (Sutton and Barto. 1998 \cite{Sutton1998}) is the problem faced by an agent who must learn the behavior through trial-and-error interactions with a dynamic environment (Kaelbling et al. 1996 \cite{Littman1996}).
+For example, AlphaZero (Silver et al. 2017 \cite{silver2017mastering}), developed by DeepMind, reached a virtually unthinkable level of play to defeat humans, and powerful chess game-engine Stockfish and reinforcement learning methods can play complex video games like Atari (Mnih et al. 2015 \cite{mnih2015humanlevel}) just by perception. 
+This kind of performance is achieved by interacting with the environment a hundred or million times. 
+Simulations are used to achieve this data-driven learning. 
+So deploying these solutions, which pose safety constraints to both learner and environment, into the safety-critical environment is impossible.\\
+\\
+Real consequences for actions in the real world force us to guarantee safety for real-world systems like robotics and nuclear power plant controller. 
+For example, Turchetta et al.\cite{conf/nips/TurchettaB016} considered the problem of an autonomous rover exploring the surface of Mars. 
+The rover does not know the height or gradient of the surface it explores. 
+Since the rover has physical limitations for the gradients it can move over, it has to explore the surface safely, which maximizes scientific insight. 
+The change in the altitudes of Mars's surface due to external factors results in a non-stationary environment, which makes the safe exploration problem more complicated.\\
+\\
+The agent in single-agent system models itself, the environment, and its interactions. 
+Multi-agent systems differ from single-agent systems in that several agents exist which model each other's goals and actions. 
+Since the multi-agent systems are intrinsically non-stationary, safety is a critical issue. 
+The above example of the Mars rover uses SafeOpt \cite{conf/icml/SuiGBK15}, based on the Bayesian Optimization framework, to tune the model hyperparameters to achieve safety. 
+Prior work Hyperspace \cite{conf/sbac-pad/YoungHRK18} a parallel implementation of Bayesian Optimization, leverages high-performance computing (HPC) resources better to understand unknown, potentially non-convex hyperparameter search spaces. 
+They show that it is possible to discover families of good hyperparameter settings over various Deep RL models by partitioning large search spaces and running many optimization procedures in parallel. 
+Our work considers the successive partitioning of search space following safety constraints and runs the optimization process in parallel accordingly.
 
-\section{Multi-Armed Bandit Problem}
-The Multi-armed Bandit (MAB) problem is a classic mathematical description of the explore-exploit tradeoff \cite{Robbins:1952}. 
-A decision-maker(agent) is faced with a sequential series of decisions in the MAB problem. 
-Each choice requires the decision-maker(agent) to pick between two or more options, often known as arms, 
-each of which has a probability distribution associated with it that models the reward. 
-The decision-maker receives a noisy reward chosen from the related probability distribution after selecting an option. 
-The goal of the decision-maker is to maximise their expected cumulative reward, 
-which is comparable to selecting the option with the highest mean as often as possible.
+\section{Prior Work}
+\label{sec:prior-work}
+Multi-Armed (or $K$-armed) bandit problem models a situation where an agent faces a sequential series of $K$ possible choices, each leading to a random reward whose distribution is unknown. 
+The goal of this agent is to maximize the total reward it receives over a given period. 
+This is an Explore-Exploit dilemma, and we frequently face choosing between options. 
+Instead of $K$, discrete number arms, if we consider the case of an infinite number of arms in continuous space, will get continuous MAB called Bayesian Optimization.\cite{Srinivas-Bandits}
 
-\begin{algorithm}
-	\SetAlgoVlined
-	\caption{Distributed SafeOpt}
-	\KwIn{Objective function $f$, GP prior($\mu, k$), Parameter search-space $S$, Number of parameters $d$, Number of subspaces per parameter $n$, Safe seed set $S_0$, Safety threshold $h$}
-	\ForEach{$parameter$ in $S$}
-	{
-		divide $parameter$ into $n$ subspaces.
-	}
-	Take all combinations of subspaces to form $hyperspaces$.\\
-	\tcc{$n^d$ hyperspaces are possible.}
-	currentSafeHyperspace = $hyperspace : allHyperspaces | S_0 \in hyperspace$\\
-	Deploy optimization process for whole search-space into a single node.
-\end{algorithm}
+BO is an effective strategy for finding the extrema of objective functions that are costly to evaluate. 
+Moreover, it is applicable in cases where one does not apriori know the objective function but can obtain evaluations (possibly noisy) of this function at sampled values. 
+It is advantageous when these evaluations are costly, when the problem at hand is non-convex, or when one does not have access to find derivatives of the objective function.\cite{Freitas-BO}
 
-\begin{algorithm}
-	\SetAlgoVlined
-	\caption{Deploy Hyperspace}
-	\KwIn{$f$, GP($\mu, k$), $S$, $S_0$, $h$, $currentSafeHyperspace$, $allHyperspaces$}
-	Initialize $SafeOpt$ with safe seed points $S_0$.\\
-	\If{currentSafeHyperspace $is$ leafHyperspace}
-	{
-		\For{$i=1:10$}
-		{
-			run $SafeOpt$ algorithm
-		}
-		\KwRet{}
-	}
-	\For{$i=1:10$}
-	{
-		samplePoint=$SafeOpt$.optimize()\\
-		funcValue=$f$(samplePoint)\\
-		newSafeHyperspace = hyperspace : allHyperspaces | samplePoint $\in$ hyperspace\\
-		\eIf{funcValue $\ge h$ AND newSafeHyperspace $\neq$ currentSafeHyperspace}
-		{
-			Split the search space between two hyperspaces.\\
-			Deploy the newSafeHyperspace into new node with samplePoint as safe seed.\\
-			Change the search space for currentSafeHyperspace accordingly and continue optimization process in same node.\\
-		}
-		{
-			add samplePoint and funcValue to $SafeOpt$ model.
-		}
-		
-	}
-\end{algorithm}
+Shahin et al.\cite{Shahrampour} addresses the multi-armed bandit problem in a multi-agent framework. 
+Players explore a finite set of arms with stochastic rewards. 
+The goal is to find the best global arm, i.e., the one with the largest expected reward averaged out among players. 
+To achieve this goal, they developed \textit{Distributed Upper Estimated Reward} (\texttt{d-UER}), a distributed variant of the well-known UCB1 algorithm. 
+The algorithm performance is measured in terms of network regret. Complete network scales down the regret of its single-player counterpart by the network size.
+Sankararaman et al.\cite{Sankararaman.ma.mab} consider a setup consisting of many agents $n$ that collaboratively and simultaneously solve the same instance of $K$-armed MAB to minimize the average cumulative regret over all agents. 
+The agents can communicate and collaborate only through a pairwise asynchronous gossip-based protocol that exchanges a limited number of bits. The playing arms-set is non-decreasing. 
+The local-explore with gossip mechanism ensures that the best arm spreads quickly through the network to all agents.
+Chawla, Sankararaman et al.\cite{chawla2020gossiping} extend their previous work in the same setting, where gossipped best arm will be inserted into playing arms-set, and poor performing arm will be eliminated from playing arms-set. 
+Agents pull information from other agents for a given communication budget.
+Daniel Vial et al.\cite{Daniel.robust.ma.mab} assume the presence of malicious agents in the system. So they developed a \textit{blocking algorithm} that blocks an agent recommending poor arm.
+
+Kandasamy et al.\cite{pmlr-v84-kandasamy18a} parallelized Bayesian Optimisation via Thompson Sampling and showed that making n evaluations distributed among M workers are essentially equivalent to performing n evaluations in sequence. 
+They developed synchronous and asynchronous parallel versions of Thompson Sampling (TS), which are synTS and asyTS, respectively.
+Ruben et al.\cite{Ruben.distr.bo} compared Thompson sampling with other acquisition functions in a sequential setting, and it performed suboptimally. So they modeled BO as a partially observable MDP. They used Boltzmann policy in the quey point sampling process, which trivially allows a distributed Bayesian optimization implementation with a high level of parallelism and scalability.
+
+Extending and adapting deep learning techniques for the sequential decision-making process, i.e., deciding based on recent experience a set of actions to take in an uncertain environment based on some goals, led to the development of deep reinforcement learning (DRL) approaches. 
+Young Todd et al.\cite{conf/sbac-pad/YoungHRK18} address the challenge of hyperparameter optimization for DRL algorithms. They designed a distributed, sequential model-based optimization (SMBO) algorithm, \texttt{HyperSpace}, which achieves parallelism by concurrently running many Gaussian processes over a large hyperparameter search space. 
+This is done by dividing the hyperparameter search space and forming hyperspaces. 
+More critically, dividing the search space means that a more detailed search is performed as many more models are explored across a diverse set of search spaces. 
+This addresses concerns of exponential scaling acknowledged in early papers on Bayesian optimization theory \cite{pmlr-v9-grunewalder10a} \cite{Srinivas_2012}, which showed that as number of search dimensions increase, Bayesian optimization requires many more queries of the objective function in order to bound our uncertainty about the optimization process.
+
+Garcıa and Fernández \cite{garcia15a} provide a thorough survey on Safe Reinforcement Learning. 
+In many applications, we require that the sampled function values exceed some prespecified safety threshold, a requirement that existing algorithms fail to meet. 
+Examples include medical applications where patient comfort must be guaranteed, recommender systems aiming to avoid user dissatisfaction, and robotic control, which seeks to avoid controls causing physical harm to the platform. 
+Under the assumption that these problems (unknown function) satisfy regularity conditions expressed via a Gaussian process prior. 
+Sui, Krause, et al.\cite{conf/icml/SuiGBK15} propose a novel algorithm, \texttt{SAFEOPT}, which models the unknown function as a sample from a Gaussian process (GP), and uses the predictive uncertainty to guide exploration.
+
+\section{Our Contribution}
+\label{sec:our-contribution}
+
+
+%\section{Thesis Outline}
