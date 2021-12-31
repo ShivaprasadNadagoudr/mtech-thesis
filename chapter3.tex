@@ -2,10 +2,19 @@
 \label{ch:distbo}
 
 \section{System Model and Problem Statement}
+We will be given with an unknown function $f: \mathcal{X} \to \mathbb{R}$ over some domain $\mathcal{X} \subset \mathbb{R}^d$. But $f$ is expensive to compute and no access to gradients.
+The objective of the safe optimization problem is to find the maximum of an unknown function $f(x)$ where $x \in \mathcal{X}$ subject to safety constraints. 
+We assume that $f(x)$ is a Lipschitz continuous function of $x$ on a compact set $\mathcal{X}$. The Lipschitz constant is assumed to be $L$.
+Furthermore, the seed set $S_0 \subset \mathcal{X}$ that contains atleast one safe point. 
+We should ensure that, for all time steps $t$, it holds that $f(x_t) \geq h$, where $h$ is a problem-specific safety threshold.
+We can divide each search space dimension into $n$ number of subspaces and take the all possible combinations to form $n^d$ hyperspaces. Thus we assume that there are $m \ge n^d$ computing nodes avialable. 
+Additionally, we will be having time and communication constraint for a given network connection.
+
+We note that since the function is unknown, we optimize the function by observing the value of the function at points $x_t \in \mathcal{X}$ which are chosen for every time $t$, meeting the safety constraint $f(x_t) \geq h$.
+So our problem is to find safely reachable point $x^* \in \mathcal{X}$ which maximizes the value of our unknown function $f$, by distributing the computation possibly among $m$ nodes by deploying safely reachable hyperspace in each node.
 
 \section{Distributed SafeOpt}
-Explain the example.
-Then algorithm
+
 
 \begin{algorithm}
 %	\SetAlgoVlined
