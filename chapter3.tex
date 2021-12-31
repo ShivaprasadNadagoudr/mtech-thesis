@@ -1,0 +1,56 @@
+\chapter{Distributed Safe Bayesian Optimization}
+\label{ch:distbo}
+
+\section{System Model and Problem Statement}
+
+\section{Distributed SafeOpt}
+Explain the example.
+Then algorithm
+
+\begin{algorithm}
+%	\SetAlgoVlined
+	\caption{Distributed SafeOpt}
+	\KwIn{Objective function $f$, GP prior($\mu, k$), Parameter search-space $S$, Number of parameters $d$, Number of subspaces per parameter $n$, Safe seed set $S_0$, Safety threshold $h$}
+	\ForEach{$parameter$ in $S$}
+	{
+		divide $parameter$ into $n$ subspaces.
+	}
+	Take all combinations of subspaces to form $hyperspaces$.\\
+	\tcc{$n^d$ hyperspaces are possible.}
+	currentSafeHyperspace = $hyperspace : allHyperspaces | S_0 \in hyperspace$\\
+	Deploy optimization process for whole search-space into a single node.
+\end{algorithm}
+
+\begin{algorithm}
+	\SetAlgoVlined
+	\caption{Deploy Hyperspace}
+	\KwIn{$f$, GP($\mu, k$), $S$, $S_0$, $h$, $currentSafeHyperspace$, $allHyperspaces$}
+	Initialize $SafeOpt$ with safe seed points $S_0$.\\
+	\If{currentSafeHyperspace $is$ leafHyperspace}
+	{
+		\For{$i=1:10$}
+		{
+			run $SafeOpt$ algorithm
+		}
+		\KwRet{}
+	}
+	\For{$i=1:10$}
+	{
+		samplePoint=$SafeOpt$.optimize()\\
+		funcValue=$f$(samplePoint)\\
+		newSafeHyperspace = hyperspace : allHyperspaces | samplePoint $\in$ hyperspace\\
+		\eIf{funcValue $\ge h$ AND newSafeHyperspace $\neq$ currentSafeHyperspace}
+		{
+			Split the search space between two hyperspaces.\\
+			Deploy the newSafeHyperspace into new node with samplePoint as safe seed.\\
+			Change the search space for currentSafeHyperspace accordingly and continue optimization process in same node.\\
+		}
+		{
+			add samplePoint and funcValue to $SafeOpt$ model.
+		}
+		
+	}
+\end{algorithm}
+
+\section{Results Analysis}
+Explain baseline and compare our results with baseline results.

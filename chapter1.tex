@@ -6,7 +6,7 @@ Simulations are used to achieve this data-driven learning.
 So deploying these solutions, which pose safety constraints to both learner and environment, into the safety-critical environment is impossible.\\
 \\
 Real consequences for actions in the real world force us to guarantee safety for real-world systems like robotics and nuclear power plant controller. 
-For example, Turchetta et al.\cite{conf/nips/TurchettaB016} considered the problem of an autonomous rover exploring the surface of Mars. 
+For example, Turchetta et al.\cite{TurchettaB016} considered the problem of an autonomous rover exploring the surface of Mars. 
 The rover does not know the height or gradient of the surface it explores. 
 Since the rover has physical limitations for the gradients it can move over, it has to explore the surface safely, which maximizes scientific insight. 
 The change in the altitudes of Mars's surface due to external factors results in a non-stationary environment, which makes the safe exploration problem more complicated.\\
@@ -14,8 +14,8 @@ The change in the altitudes of Mars's surface due to external factors results in
 The agent in single-agent system models itself, the environment, and its interactions. 
 Multi-agent systems differ from single-agent systems in that several agents exist which model each other's goals and actions. 
 Since the multi-agent systems are intrinsically non-stationary, safety is a critical issue. 
-The above example of the Mars rover uses SafeOpt \cite{conf/icml/SuiGBK15}, based on the Bayesian Optimization framework, to tune the model hyperparameters to achieve safety. 
-Prior work Hyperspace \cite{conf/sbac-pad/YoungHRK18} a parallel implementation of Bayesian Optimization, leverages high-performance computing (HPC) resources better to understand unknown, potentially non-convex hyperparameter search spaces. 
+The above example of the Mars rover uses SafeOpt \cite{SuiGBK15}, based on the Bayesian Optimization framework, to tune the model hyperparameters to achieve safety. 
+Prior work Hyperspace \cite{YoungHRK18} a parallel implementation of Bayesian Optimization, leverages high-performance computing (HPC) resources better to understand unknown, potentially non-convex hyperparameter search spaces. 
 They show that it is possible to discover families of good hyperparameter settings over various Deep RL models by partitioning large search spaces and running many optimization procedures in parallel. 
 Our work considers the successive partitioning of search space following safety constraints and runs the optimization process in parallel accordingly.
 
@@ -42,24 +42,28 @@ Chawla, Sankararaman et al.\cite{chawla2020gossiping} extend their previous work
 Agents pull information from other agents for a given communication budget.
 Daniel Vial et al.\cite{Daniel.robust.ma.mab} assume the presence of malicious agents in the system. So they developed a \textit{blocking algorithm} that blocks an agent recommending poor arm.
 
-Kandasamy et al.\cite{pmlr-v84-kandasamy18a} parallelized Bayesian Optimisation via Thompson Sampling and showed that making n evaluations distributed among M workers are essentially equivalent to performing n evaluations in sequence. 
+Kandasamy et al.\cite{pmlr-v84-kandasamy18a} parallelized Bayesian Optimisation via Thompson Sampling and showed that making $n$ evaluations distributed among $M$ workers are essentially equivalent to performing $n$ evaluations in sequence. 
 They developed synchronous and asynchronous parallel versions of Thompson Sampling (TS), which are synTS and asyTS, respectively.
 Ruben et al.\cite{Ruben.distr.bo} compared Thompson sampling with other acquisition functions in a sequential setting, and it performed suboptimally. So they modeled BO as a partially observable MDP. They used Boltzmann policy in the quey point sampling process, which trivially allows a distributed Bayesian optimization implementation with a high level of parallelism and scalability.
 
 Extending and adapting deep learning techniques for the sequential decision-making process, i.e., deciding based on recent experience a set of actions to take in an uncertain environment based on some goals, led to the development of deep reinforcement learning (DRL) approaches. 
-Young Todd et al.\cite{conf/sbac-pad/YoungHRK18} address the challenge of hyperparameter optimization for DRL algorithms. They designed a distributed, sequential model-based optimization (SMBO) algorithm, \texttt{HyperSpace}, which achieves parallelism by concurrently running many Gaussian processes over a large hyperparameter search space. 
+Young Todd et al.\cite{YoungHRK18} address the challenge of hyperparameter optimization for DRL algorithms. They designed a distributed, sequential model-based optimization (SMBO) algorithm, \texttt{HyperSpace}, which achieves parallelism by concurrently running many Gaussian processes over a large hyperparameter search space. 
 This is done by dividing the hyperparameter search space and forming hyperspaces. 
 More critically, dividing the search space means that a more detailed search is performed as many more models are explored across a diverse set of search spaces. 
-This addresses concerns of exponential scaling acknowledged in early papers on Bayesian optimization theory \cite{pmlr-v9-grunewalder10a} \cite{Srinivas_2012}, which showed that as number of search dimensions increase, Bayesian optimization requires many more queries of the objective function in order to bound our uncertainty about the optimization process.
+This addresses concerns of exponential scaling acknowledged in early papers on Bayesian optimization theory \cite{pmlr-v9-grunewalder10a} \cite{Srinivas.2012}, which showed that as number of search dimensions increase, Bayesian optimization requires many more queries of the objective function in order to bound our uncertainty about the optimization process.
 
 Garcıa and Fernández \cite{garcia15a} provide a thorough survey on Safe Reinforcement Learning. 
 In many applications, we require that the sampled function values exceed some prespecified safety threshold, a requirement that existing algorithms fail to meet. 
 Examples include medical applications where patient comfort must be guaranteed, recommender systems aiming to avoid user dissatisfaction, and robotic control, which seeks to avoid controls causing physical harm to the platform. 
 Under the assumption that these problems (unknown function) satisfy regularity conditions expressed via a Gaussian process prior. 
-Sui, Krause, et al.\cite{conf/icml/SuiGBK15} propose a novel algorithm, \texttt{SAFEOPT}, which models the unknown function as a sample from a Gaussian process (GP), and uses the predictive uncertainty to guide exploration.
+Sui, Krause, et al.\cite{SuiGBK15} propose a novel algorithm, \texttt{SAFEOPT}, which models the unknown function as a sample from a Gaussian process (GP), and uses the predictive uncertainty to guide exploration.
 
-\section{Our Contribution}
+\section{Our Work}
 \label{sec:our-contribution}
+\begin{itemize}
+	\item We consider distributing the safe optimization process among multiple nodes by successively partitioning the search space to create new hyperspaces.
+	\item 	We evaluated our algorithm to optimize some standard functions and ML models built on standard dataset.
+\end{itemize}
 
 
 %\section{Thesis Outline}

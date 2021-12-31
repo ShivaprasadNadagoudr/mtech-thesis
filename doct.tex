@@ -1,5 +1,6 @@
-\documentclass[mtech,thesis]{iist}
+\documentclass[mtech,project]{iist}
 \usepackage{times}
+\DeclareMathOperator*{\argmax}{argmax}
 
 \title{Distributed Safe Bayesian Optimization}
 \author{Shivaprasad Nadagoudr}
@@ -15,11 +16,11 @@
 
 %% ---- Make the initial set of pages ---- %%
 \maketitle % Title page
-%\makecertificate % Certificate 
+\makecertificate % Certificate 
 %\makedeclaration % Declaration
 %\makededication % Dedication
 %\makeacknowledgements % Acknowledgements
-\makeabstract % Abstract
+%\makeabstract % Abstract
 \maketableofcontents % Table of contents
 %\makelistoffigures % List of figures
 %\makelistoftables % List of tables
@@ -34,7 +35,8 @@
 %% ---- Start chapters here ---- %%
 \input{chapter1}
 \input{chapter2}
-%\input{chapter3}
+\input{chapter3}
+\input{chapter4}
 
 
 %% ---- Bibliography addition ----%%
