@@ -1,6 +1,16 @@
 \chapter{Conclusions}
 \label{ch:conclusions}
 
-Give conclusions
+\textit{Distributed SafeOpt} algorithm is able to reach same maxima as \texttt{SafeOpt}. The number of unsafe evaluations are comparable in both algorithms.
+But in high dimensional functions, \textit{Distributed SafeOpt} is comparably achieving lower maxima than \texttt{SafeOpt}. 
+We assume the reason for such performance is that \texttt{SafeOpt} knows all evaluated points at any time step $t$, whereas in \textit{Distributed SafeOpt} as the search space splitting happens we lose some information of points evaluated in other search space.
+This problem will be addresssed in future work.
 
 \section{Future Work}
+\begin{itemize}
+	\item Device strategy in include the information of points evaluated in other search space as prior for newly starting optimization processes.
+	\item Consider the case of overlapped hyperspaces.
+	\item Develop program that actually uses different computing nodes for optimization.
+	\item Extend the type of hyperparameter to Integer and Categorical. 
+	\item Setup reinforcement learning examples involving safety constraint, to tune the hyperparameter of that model.
+\end{itemize}

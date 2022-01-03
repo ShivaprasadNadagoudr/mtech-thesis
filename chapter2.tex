@@ -76,7 +76,8 @@ Stochastic processes are sometimes called \textit{random functions}, by analogy 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.40]{figures/gp.png}
-	\caption{Simple 1D Gaussian process with three observations. The solid black line is the GP surrogate mean prediction of the objective function given the data, and the shaded area shows the mean plus and minus the variance. The superimposed Gaussians correspond to the GP mean and standard deviation ($\mu(\cdot)$ and $\sigma(\cdot)$) of prediction at the points, $x_{1:3}$.}
+	\caption{Simple 1D Gaussian process with three observations. The solid black line is the GP surrogate mean prediction of the objective function given the data, and the shaded area shows the mean plus and minus the variance. The superimposed Gaussians correspond to the GP mean and standard deviation ($\mu(\cdot)$ and $\sigma(\cdot)$) of prediction at the points, $x_{1:3}$.}
+
 	\label{fig:gp-example}
 \end{figure}
 
@@ -139,6 +140,7 @@ where $w_t(x)=u_t(x)-l_t(x)$.\\
 The pseudo code for SafeOpt algorithm is given below. For high level description of SafeOpt please refer the Sui et. al. paper \cite{sui15}.
 \begin{algorithm}
 	\caption{\texttt{SafeOpt}}
+	\label{alg:safeopt}
 	\KwIn{Function domain $\mathcal{X}$ , GP prior $(\mu, k)$, signal variance parameter $\sigma_0$ , seed set $S_0$, safety threshold $h$, Lipschitz constant $L$.}
 	$C_0(x) \gets [h, \infty), \forall x \in S_0$\\
 	$C_0(x) \gets \mathbb{R}, \forall x \in \mathcal{X} - S_0$\\
