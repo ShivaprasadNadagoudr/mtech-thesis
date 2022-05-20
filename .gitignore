@@ -18,4 +18,4 @@
 *.lof
 *.lot
 doct.pdf
-
+*synctex*

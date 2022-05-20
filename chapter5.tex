@@ -1,0 +1,13 @@
+\chapter{Conclusions}
+\label{ch:conclusions}
+
+We formulated the problem of distributing the safe Bayesian Optimization by successively dividing the search space to create hyperspaces. We defined \emph{DistributedSafeOpt} and \emph{OverlappedDistributedSafeOpt} algorithms as a solution to the above-defined problem. We evaluated the proposed algorithms' performance via some standard test functions simulation and compared them with the baseline \emph{SafeOpt} algorithm.
+We observed that distributed version algorithms reach the same or higher maxima as \emph{SafeOpt} within the same evaluation time constraint without evaluating more number unsafe evaluations. Also, communicating the points evaluated in the shared region in the \emph{OverlappedDistributedSafeOpt} algorithm helped reduce the unsafe evaluations compared to \emph{DistributedSafeOpt}. Furthermore, the distributed setup enforces some extra communication overhead, which can be accommodated as it takes significantly less time than the objective function evaluation.
+
+We demonstrated the practical application of our algorithms in problem hyperparameter tuning of the CNN network and tuning of control parameters for a robotic arm. Training deep neural networks and running simulations for control problems demand high computing resources, so sequentially evaluating these problems for a set of hyperparameters requires more time to find maxima. So distributing the computation among all available nodes will reduce the time needed to find maxima. 
+
+\section{Future Work}
+\begin{itemize}
+	\item We can create more copies of the hyperspaces that seem more promising in finding maxima if resources are available for use.
+	\item We can early stop a hyperspace that is evaluating more unsafe points.
+\end{itemize}

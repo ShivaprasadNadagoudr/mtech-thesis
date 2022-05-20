@@ -1,1 +1,13 @@
-Abstract here.
+\hspace*{0.7cm}Safe exploration enhanced the use of reinforcement learning algorithms in safety-critical environments. 
+A state-of-the-art algorithm known as the \emph{SafeOpt} achieves the task of safe exploration while avoiding safety violations. 
+We consider these safety-critical environments as the high dimensional black-box function that is hard to optimize and requires intensive computational power to interact. 
+So, optimizing these black-box functions by sequential methods like SafeOpt will consume much computational time. 
+We developed distributed versions of the existing algorithms to have more function evaluations in a given time constraint to settle the uncertainty about the function.\\
+
+We have developed the \emph{DistributedSafeOpt} algorithm, which successively divides the search space into hyperspaces and deploys them into new computing nodes. 
+An optimization process is started in a single node from the safe seed set. 
+As the safe set expands by evaluating the objective function at new points, we check if the point belongs to another hyperspace to divide the current search space into two new hyperspaces. 
+An extension of this algorithm that considers the overlapped hyperspaces and communicating points evaluated in the overlapped region is called \emph{OverlappedDistributedSafeOpt}.\\
+
+We have tested the performance of these algorithms on the standard optimization test functions and an ensemble of GP sample functions. 
+These algorithms are used in practical applications of tuning the hyperparameters of the CNN network and Robotic arm.

@@ -100,6 +100,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{float}
 
 
 %% ---- Content Styles ---- %%
