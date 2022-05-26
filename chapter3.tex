@@ -6,13 +6,13 @@ This chapter considers the problem of distributing the safe optimization process
 
 \section{System Model and Problem Statement}
 \par We will be given with an unknown function $f: \mathcal{X} \to \mathbb{R}$ over some domain $\mathcal{X} \subset \mathbb{R}^d$. But $f$ is expensive to compute and no access to gradients.
-The objective of the safe optimization problem is to find the maximum of an unknown function $f(x)$ where $x \in \mathcal{X}$ subject to safety constraints. 
-We assume that $f(x)$ is a Lipschitz continuous function of $x$ on a compact set $\mathcal{X}$. The Lipschitz constant is assumed to be $L$.
+The objective\textcolor{white}{i}of the\textcolor{white}{i}safe optimization problem\textcolor{white}{i}is to find the maximum\textcolor{white}{i}of an unknown function $f(x)$ where $x \in \mathcal{X}$ subject to\textcolor{white}{i}safety constraints. 
+We assume that $f(x)$ is a Lipschitz continuous function of $x$ on a compact set $\mathcal{X}$. The Lipschitz\textcolor{white}{i}constant is\textcolor{white}{i}assumed to be $L$.
 Furthermore, the seed set $S_0 \subset \mathcal{X}$ that contains atleast one safe point. 
 We should ensure that, for all time steps $t$, it holds that $f(x_t) \geq h$, where $h$ is a problem-specific safety threshold.
 We can divide each search space dimension into $n$ number of subspaces and take the all possible combinations to form $n^d$ hyperspaces. Thus we assume that there are $m \ge n^d$ computing nodes avialable. 
 Additionally, we will be having time and communication constraint for a given network connection.
-\par We note that since the function is unknown, we optimize the function by observing the value of the function at points $x_t \in \mathcal{X}$ which are chosen for every time $t$, meeting the safety constraint $f(x_t) \geq h$.
+\par We\textcolor{white}{i}note that since the\textcolor{white}{i}function is unknown, we optimize the\textcolor{white}{i}function by observing\textcolor{white}{i}the value of the function at points $x_t \in \mathcal{X}$ which are chosen\textcolor{white}{i}for every\textcolor{white}{i}time $t$, meeting the safety constraint $f(x_t) \geq h$.
 So our problem is to find safely reachable point $x^* \in \mathcal{X}$ which maximizes the value of our unknown function $f$, by distributing the computation possibly among $m$ nodes by successively dividing and then deploying each safely reachable hyperspace into each node.
 
 \section{Distributed SafeOpt}
@@ -166,7 +166,7 @@ We start with the optimization objective function $f(\cdot)$ in $d$ dimensional 
 Initially, we deploy the optimization process in a single node with a given safe set $S_0$ by taking the hyperspace in which the safe seed point belongs as the initial hyperspace for the whole search space. As we proceed optimization process by sampling the objective function with a new point, we will check whether the point belongs to any other hyperspace. 
 Suppose the point is safe and belongs to some new hyperspace. In that case, \texttt{DeployOverlappedHyperspace} \ref{alg:deployovrhs} algorithm will instantiate a new optimization process into a new node for that hyperspace. Alternatively, if the point (safe or unsafe) belongs to the overlapped region, we will share that point with all corresponding hyperspaces.
 
-Furthermore, we will continue to the next iteration of the optimization process in all other cases. At any time, the objective function evaluated at a given point will be added to the global array \textit{all points evaluted}. An abstract architecture of the software implementation and an example showing how hyperspaces are created is discussed in the following subsections.
+Furthermore, we will continue to the next iteration of the optimization process in all other cases. At any time, the objective function evaluated at a given point will be added to the global array \textit{all points evaluted}. An abstract architecture of the software implementation and an example showing how hyperspaces are created is discussed in the following subsections.\\
 
 
 \begin{algorithm}[H]
@@ -184,7 +184,7 @@ Furthermore, we will continue to the next iteration of the optimization process 
 	Initially deploy optimization process for whole search-space into a single node.\\		
 \end{algorithm}
 
-\begin{algorithm}[H]
+\begin{algorithm}
 %	\SetAlgoVlined
 	\caption{\texttt{DeployOverlappedHyperspace}}
 	\label{alg:deployovrhs}

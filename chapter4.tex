@@ -1,7 +1,9 @@
 \chapter{Test Results and Simulations}
 \label{ch:results}
 
-In this chapter, we consider the problem of optimizing four standard functions in section \ref{sec:std-test-functions}, an ensemble of 200 GP sample functions in section \ref{sec:ensemble}, hyperparameter tuning of convolution network for classification in section \ref{sec:cnn-model}, and hyperparameter tuning for robotic arm in section \ref{sec:robotic}. Results are compared between algorithms \textit{Safeopt}, \textit{DistributedSafeOpt} and \textit{OverlappedDistributedSafeOpt} in terms of cumulative unsafe evaluations and achieved maxima. For all test runs and simulations we are initializing all three algorithms with same safe seed and kernel function.  
+In this chapter, we consider the problem of optimizing four standard functions in section \ref{sec:std-test-functions}, an ensemble of 200 GP sample functions in section \ref{sec:ensemble}, hyperparameter tuning of convolution network for classification in section \ref{sec:cnn-model}, and hyperparameter tuning for robotic arm in section \ref{sec:robotic}.
+We are doing these tests to cinfirm that the distributed approach gives the same results as the centralized.
+Results are compared between algorithms \textit{Safeopt}, \textit{DistributedSafeOpt} and \textit{OverlappedDistributedSafeOpt} in terms of cumulative unsafe evaluations and achieved maxima. For all test runs and simulations we are initializing all three algorithms with same safe seed and kernel function. 
 
 \section{Standard Test Functions}\label{sec:std-test-functions}
 We are running our algorithm on four standard optimization functions, namely Bird function, Langermanns' function, Lavy05 function, and Michalewicz's function. These functions were chosen because they resemble what an irregular environment may seem like in real life. The steep slope of the Langermann function, for example, resembles an extremely deep oceanic trench, whereas the Bird function resembles a fluid diffusing away from an extraordinarily strong source. The performance is compared in terms of achievable maximum and cumulative unsafe evaluations. 
@@ -164,32 +166,32 @@ We note that the objective function is an actual Black Box function as we only h
 \label{subsec:robot-prob-bg}
 \hspace*{0.7cm}\textbf{Feedback Gain}: In a control system, when the complete or partial portion of the output is returned to the input side for utilization, then it is known as feedback gain.
 
-\textbf{Linear Quadratic Regulator}: We consider a system that follows a discrete-time non-linear dynamic model
+\textbf{Linear Quadratic Regulator}: We consider\textcolor{white}{"}a system that follows a discrete-time non-linear dynamic model\textcolor{white}{"}
 \begin{equation}
 	\label{eq:dyn-model}
 	x_{k+1} = f(x_k, u_k)
 \end{equation}
-with system states $x_k \in \mathbb{R}^{n_x}$ and control input $u_k \in \mathbb{R}^{n_u}$ at time instant $k$. We assume that (\ref{eq:dyn-model}) has an equilibrium at $x_k=0$ and $u_k=0$, which we want to keep the system at. We also assume that $x_k$ can be measured and, if not, an appropriate state estimator is used.
+with system\textcolor{white}{"}states $x_k \in \mathbb{R}^{n_x}$ and control input $u_k \in \mathbb{R}^{n_u}$ at time instant $k$. We assume that (\ref{eq:dyn-model}) has an equilibrium at $x_k=0$ and $u_k=0$, which we want to keep the system at. We also assume that $x_k$ can be measured and, if not, an appropriate state estimator is used.\textcolor{white}{"}
 
 Consider a scenario, where a linear model
 \begin{equation}
 \label{eq:lin-system}
 \tilde{x}_{k+1} = \boldsymbol{A}_n \tilde{x}_k + \boldsymbol{B}_n u_k
 \end{equation}
-is given as an approximation of the dynamics (\ref{eq:dyn-model}) about the equilibrium at zero. We refer to (\ref{eq:lin-system}) as the nominal model, while (\ref{eq:dyn-model}) are the true system dynamics, which are unknown.
+is given\textcolor{white}{"}as an approximation of the dynamics (\ref{eq:dyn-model}) about the equilibrium at zero. We refer to (\ref{eq:lin-system}) as the nominal model, while (\ref{eq:dyn-model}) are the true system dynamics, which are unknown.\textcolor{white}{"}
 
-A common way to measure the performance of a control system is through a quadratic cost function such as
+A common way\textcolor{white}{"}to measure the performance of a control system is through a quadratic cost function such as\textcolor{white}{"}
 \begin{equation}
 \label{eq:lqr-cost-func}
 J=\lim_{K \rightarrow \infty}\frac{1}{K}\mathbb{E}\left[\left(\sum_{k=0}^{K-1}x_k^{T}\boldsymbol{Q}x_k + u_k^{T}\boldsymbol{R}u_k\right)\right]
 \end{equation}
-with positive-definite weighting matrices $\boldsymbol{Q}$ and $\boldsymbol{R}$, and $\mathbb{E}[\cdot]$ the expected value. The cost (\ref{eq:lqr-cost-func}) captures a trade-off between control performance (keeping $x_k$ small) and control effort (keeping $u_k$ small).
+with positive-definite weighting\textcolor{white}{"}matrices $\boldsymbol{Q}$ and $\boldsymbol{R}$, and $\mathbb{E}[\cdot]$ the expected value. The cost (\ref{eq:lqr-cost-func}) captures a trade-off between control performance (keeping $x_k$ small) and control effort (keeping $u_k$ small).\textcolor{white}{"}
 
 A straightforward approach to compute the optimal controller minimizing (\ref{eq:lqr-cost-func}) for the nominal model (\ref{eq:lin-system}) will yield a locally optimal solution. This controller is given by the well-known Linear Quadratic Regulator (LQR) 
 \begin{equation}
 u_k = \boldsymbol{F}x_k
 \end{equation}
-whose static gain matrix $\boldsymbol{F}$ can readily be computed by solving the discrete-time infinite-horizon LQR problem for the nominal model $(\boldsymbol{A}_n, \boldsymbol{B}_n)$ and the weights $(\boldsymbol{Q}, \boldsymbol{R})$. For simplicity, we write
+whose static\textcolor{white}{"}gain matrix $\boldsymbol{F}$ can readily be computed by solving the discrete-time infinite-horizon LQR problem for the nominal model $(\boldsymbol{A}_n, \boldsymbol{B}_n)$ and the weights $(\boldsymbol{Q}, \boldsymbol{R})$\textcolor{white}{"}. For simplicity, we write
 \begin{equation}
 \label{eq:lqr}
 \boldsymbol{F} = lqr(\boldsymbol{A}_n, \boldsymbol{B}_n, \boldsymbol{Q}, \boldsymbol{R})
@@ -214,8 +216,8 @@ Thus, our goal is to tune the cost matrices Q and R to compensate for the nonlin
 \begin{equation}\label{eq:modellqr}
 u(x(t)) = \Lambda(q) \ddot{s} + \Gamma(q,\dot{q})\dot{s} + \eta(q),
 \end{equation}
-where $s$ represents the end-effector position, $q$ the joint angles, and $\Lambda(q)$,
-$\Gamma(q,\dot{q})$, $\eta(q)$ are nonlinearities representing the mass, Coriolis, and gravity terms, respectively. The state we consider is $x(t)=[s^T(t), \dot{s}^T(t)]^T$.
+where $s$ represents\textcolor{white}{"}the end-effector position, $q$ the joint angles, and $\Lambda(q)$,
+$\Gamma(q,\dot{q})$, $\eta(q)$ are nonlinearities representing the mass, Coriolis, and gravity terms, respectively.\textcolor{white}{"} The state we consider is $x(t)=[s^T(t), \dot{s}^T(t)]^T$.
 
 We apply an impedance controller:
 \begin{equation}
@@ -224,7 +226,7 @@ We apply an impedance controller:
 		\dot{s}
 	\end{bmatrix} + \Gamma(q,\dot{q})\dot{s} + \eta(q),
 \end{equation}
-with $\boldsymbol{F}$ being the feedback gain. The torque $\tau$ applied to each of the joints can be calculated via $\tau = J^Tu(x(t))$, with $J$ the Jacobian.
+with $\boldsymbol{F}$ being the feedback gain.\textcolor{white}{"}The torque $\tau$ applied to each of the joints can be calculated via $\tau = J^Tu(x(t))$, with $J$ the Jacobian.\textcolor{white}{"}
 
 For the simulation task, we determine the impedance $\boldsymbol{F}$ using an infinite horizon LQR parameterized via
 \begin{equation*}
@@ -237,10 +239,10 @@ For the simulation task, we determine the impedance $\boldsymbol{F}$ using an in
 	 \boldsymbol{R}=10^{r-2}I_3,  \boldsymbol{A} = \begin{bmatrix}
 	 	0 & I_3\\
 	 	0 & 0
-	 \end{bmatrix}, \boldsymbol{A}=\begin{bmatrix} 0\\I_3
+	 \end{bmatrix}, \boldsymbol{B}=\begin{bmatrix} 0\\I_3
 	\end{bmatrix}.
 \end{equation*}
-The matrices $\boldsymbol{A}$, $\boldsymbol{B}$ are obtained assuming that we use a feedback linearization controller. However, because we instead use an impedance conntroller, there are nonlinearities and imprecisions in our model. The parameters $q_c$, $r$, $\kappa_d$ are tuning parameters we would like to optimize. Such an approach is in tune with \cite{LQR}.
+The\textcolor{white}{"}matrices $\boldsymbol{A}$, $\boldsymbol{B}$ are obtained assuming that we use a feedback linearization controller. However, because we instead use an impedance conntroller, there are nonlinearities and imprecisions in our model.\textcolor{white}{"}The parameters $q_c$, $r$, $\kappa_d$ are tuning parameters we would like to optimize. Such an approach is in tune with \cite{LQR}.
 
 Our model encourages the end-effector position of the robot to reach the destination as fast as possible while penalizing high end-effector velocities.
 The constraint and stage rewards (i.e., rewards received at each time step) are:
@@ -253,7 +255,7 @@ The constraint and stage rewards (i.e., rewards received at each time step) are:
 	\end{aligned}$
 \end{center}
  
-The task at hand is a high dimensional one as we have six states representing the robot's joint positions and the two parameters $q_c$ and $r$. We restrict our parameter search space to a normalized domain $q_n \times r_n \in [1/3,1] \times [-1,1]$ with $q_c = 6q_n$ and $r = 3r_n$. The value for $\kappa_d$ is heuristically set to 0.1 \cite{gosafeopt}.
+The task at hand is a high dimensional one as we have six states representing the robot's joint positions and the two parameters $q_c$ and $r$.\textcolor{white}{"}We restrict our parameter search space to a normalized domain $q_n \times r_n \in [1/3,1] \times [-1,1]$ with $q_c = 6q_n$ and $r = 3r_n$. The value for $\kappa_d$ is heuristically set to 0.1 \cite{gosafeopt}.\textcolor{white}{"}
 
 \subsection{Simulation Results and Comparison}
 We evaluate our algorithms \textit{DistributedSafeOpt} and \textit{OverlappedDistributedSafeOpt} in a simulation environment based on the MuJoCo physics engine. And compare the results with \textit{SafeOpt}. 
